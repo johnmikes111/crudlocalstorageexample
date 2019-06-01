@@ -29,7 +29,13 @@ class App extends Component {
 
     this.setState({
       products:products
-    })
+    });
+
+    this.onDelete = this.onDelete.bind(this);
+  }
+
+  onDelete(name){
+    console.log(name);
   }
    
   render() {
@@ -44,6 +50,7 @@ class App extends Component {
                 key={product.name}
                 name={product.name}
                 price={product.price}
+                onDelete={this.onDelete}
                 />
             )
           })
