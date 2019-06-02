@@ -42,6 +42,22 @@ class App extends Component {
     this.setState({products:newProducts},
       ()=> localStorage.setItem('products',JSON.stringify(newProducts)));
   }
+
+  onEdit= (editedItem,orginalName) =>{
+    let products = JSON.parse(localStorage.getItem('products'));
+
+    const editedProducts = products.map(product => {
+        if (product.name === orginalName){
+          product.name=editedItem.name;
+          product.price=editedItem.price;
+        }
+
+        return product;
+    });
+
+    this.setState({products:products},
+      ()=> localStorage.setItem('products',JSON.stringify(editedProducts)))
+  }
    
   render() {
     return (
@@ -60,6 +76,7 @@ class App extends Component {
                 name={product.name}
                 price={product.price}
                 onDelete={this.onDelete}
+                onEdit={this.onEdit}
                 />
             )
           })
