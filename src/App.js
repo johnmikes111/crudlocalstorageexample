@@ -1,19 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
 import ProductItem from './ProductItem';
-
-const products =[
-  {
-    name:'Ipad',
-    price:200
-  },
-  {
-    name:'iPhone',
-    price:650
-  }
-];
-
-localStorage.setItem('products',JSON.stringify(products));
+import AddItem from './AddItem';
 
 class App extends Component {
   constructor(props){
@@ -32,16 +20,37 @@ class App extends Component {
     });
 
     this.onDelete = this.onDelete.bind(this);
+    this.onAdd = this.onAdd.bind(this);
   }
 
   onDelete(name){
-    console.log(name);
+    const products = JSON.parse(localStorage.getItem('products'));
+
+    const filteredProducts = products.filter(product => {
+        return product.name !== name;
+    });
+
+    this.setState({
+      products:filteredProducts
+    },
+    ()=> localStorage.setItem('products',JSON.stringify(this.state.products)))
+  }
+
+  onAdd(formData) {
+    const newProducts = [...this.state.products,formData];
+
+    this.setState({products:newProducts},
+      ()=> localStorage.setItem('products',JSON.stringify(newProducts)));
   }
    
   render() {
     return (
       <div className="App">
         <h1>Products Manager</h1>
+
+        <AddItem 
+          onAdd={this.onAdd}
+        />
 
         {
           this.state.products.map(product =>{
